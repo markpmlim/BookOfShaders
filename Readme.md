@@ -15,7 +15,9 @@ How to re-use the playgrounds for testing
 
 The vertex shader, "shader.vs" is written to output a canvas that will be used by the fragment shader "shader.fs". This source code of "shader.vs" does not need to be modified at all since no uniforms are passed to the vertex shader in the examples from the "Book of Shaders".
 
-The most of the source code of the file "shader.fs" can be removed and replaced except for the first line and the last line. Reason: macOS defaults to fixed-function pipeline OpenGL; the examples in the book expects modern OpenGL (aka core OpenGL) since the keyword "varying" does not appear in any of the source codes. Hence the line:
+The most of the source code of the file "shader.fs" can be removed and replaced except for the first line and the last line. The OpenGL support code listed in GLViewController.swift instantiates a 3.2 OpenGL Core Profile context.
+
+Hence the line:
 
 #version 330
 
