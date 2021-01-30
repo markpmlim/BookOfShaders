@@ -42,6 +42,8 @@ Two functions, "prepareOpenGL" & "render" must be modified to ensure the texture
 BTW, cubemap textures can be instantiated and their texture ids returned to the caller via the "name" property of the GLKTextureInfo object. Naturally, changes need to be made to the source files "", "shader.vs" and "shader.fs"
 
 
+https://thebookofshaders.com/
+
 
 Requirements:
 
