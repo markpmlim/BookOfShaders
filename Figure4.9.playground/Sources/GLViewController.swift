@@ -80,7 +80,6 @@ public class SPOpenGLView: NSOpenGLView {
     }
 
     // This will be called every 1/60s.
-    @objc
     func scheduledDraw() {
         self.render(elapsedTime: stopClock.timeElapsed())
     }
@@ -124,7 +123,7 @@ public final class SPViewController: NSViewController {
     override public func loadView() {
         //Swift.print("loadView")
         let frameRect = NSRect(x: 0, y: 0,
-                               width: 480, height: 270)
+                               width: 400, height: 400)
         self.view = NSView(frame: frameRect)
 
         let pixelFormatAttrsBestCase: [NSOpenGLPixelFormatAttribute] = [
@@ -132,7 +131,7 @@ public final class SPViewController: NSViewController {
             UInt32(NSOpenGLPFAAccelerated),
             UInt32(NSOpenGLPFABackingStore),
             UInt32(NSOpenGLPFADepthSize), UInt32(24),
-            UInt32(NSOpenGLPFAOpenGLProfile), UInt32(NSOpenGLProfileVersion4_1Core),
+            UInt32(NSOpenGLPFAOpenGLProfile), UInt32(NSOpenGLProfileVersion3_2Core),
             UInt32(0)
         ]
         
