@@ -28,6 +28,8 @@ The built-in variable "gl_FragColor" is not supported in OpenGL Core Profile and
 
 out vec4 fragmentColor;
 
+The user could change the size of the live view; refer to the function "loadView" with the GLViewController.swift file.
+
 
 The Swift source code of the playground expects both the shader files to be in the "Resources" sub-folder of the playground package which incidentally is a special folder.
 
