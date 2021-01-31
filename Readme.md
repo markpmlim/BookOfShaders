@@ -8,7 +8,7 @@ For macOS/iOS programmers, XCode playgrounds is another alternative. The playgro
 
 Note: The source code of XCode playgrounds must be written in the Swift programming language. The MSL/GLSL shader source code must be loaded and compiled using code written in Swift.
 
-Only a few examples from the pdf version of book have been tested using an XCode playground.
+Only a few examples from the pdf version of the book have been tested using an XCode playground.
 
 
 How to re-use the playgrounds for testing
@@ -23,7 +23,10 @@ Hence the line:
 
 should not be removed.
 
-The built-in variable "gl_FragColor" is not supported in OpenGL Core Profile and must be replaced with a different user-defined variable. The "fragmentColor" is chosen for this set of playgrounds.
+The built-in variable "gl_FragColor" is not supported in OpenGL Core Profile and must be replaced with a different user-defined variable. The "fragmentColor" is chosen for this set of playgrounds. In addition, an output variable must be declared in the fragment shader source:
+
+
+out vec4 fragmentColor;
 
 
 The Swift source code of the playground expects both the shader files to be in the "Resources" sub-folder of the playground package which incidentally is a special folder.
