@@ -58,7 +58,7 @@ public class SPOpenGLView: NSOpenGLView {
         Swift.print("Time:", timeLoc)
 
         texture0Loc = glGetUniformLocation(shader.program, "u_tex0")
-        textureID = loadTexture("HokusaiWave.jpg", resolution: &u_tex0Resolution)
+        textureID = loadTexture("HokusaiWave.png", resolution: &u_tex0Resolution)
         // The geometry of the quad is embedded in the vertex shader
         // but OpenGL needs to bind a vertex array object (VAO).
         glGenVertexArrays(1, &quadVAO)
