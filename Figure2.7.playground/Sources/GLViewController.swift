@@ -71,12 +71,22 @@ public class SPOpenGLView: NSOpenGLView {
         self.render(elapsedTime: stopClock.timeElapsed())
      }
 
+    func handleMouseClick(at point: NSPoint) {
+        mouseCoords[0] = GLfloat(point.x)
+        mouseCoords[1] = GLfloat(point.y)
+        //Swift.print("mouse coords:", mouseCoords)
+    }
+
     override public func mouseDown(with event: NSEvent) {
         let mousePoint = self.convert(event.locationInWindow,
+                                      from: nil)
+        handleMouseClick(at: mousePoint)
+    }
+
+    override public func mouseDragged(with event: NSEvent) {
+        let mousePoint = self.convert(event.locationInWindow,
                                     from: nil)
-        mouseCoords[0] = GLfloat(mousePoint.x)
-        mouseCoords[1] = GLfloat(mousePoint.y)
-        Swift.print("mouse coords:", mouseCoords)
+        handleMouseClick(at: mousePoint)
     }
 
     // This will be called every 1/60s.
@@ -123,7 +133,7 @@ public final class SPViewController: NSViewController {
     override public func loadView() {
         //Swift.print("loadView")
         let frameRect = NSRect(x: 0, y: 0,
-                               width: 400, height: 400)
+                               width: 480, height: 270)
         self.view = NSView(frame: frameRect)
 
         let pixelFormatAttrsBestCase: [NSOpenGLPixelFormatAttribute] = [

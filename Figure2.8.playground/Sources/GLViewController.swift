@@ -67,16 +67,25 @@ public class SPOpenGLView: NSOpenGLView {
         self.render(elapsedTime: stopClock.timeElapsed())
     }
 
-     override public func draw(_ dirtyRect: NSRect) {
+    override public func draw(_ dirtyRect: NSRect) {
         self.render(elapsedTime: stopClock.timeElapsed())
      }
 
+    func handleMouseClick(at point: NSPoint) {
+        mouseCoords[0] = GLfloat(point.x)
+        mouseCoords[1] = GLfloat(point.y)
+    }
+    
     override public func mouseDown(with event: NSEvent) {
         let mousePoint = self.convert(event.locationInWindow,
-                                    from: nil)
-        mouseCoords[0] = GLfloat(mousePoint.x)
-        mouseCoords[1] = GLfloat(mousePoint.y)
-        Swift.print("mouse coords:", mouseCoords)
+                                      from: nil)
+        handleMouseClick(at: mousePoint)
+    }
+    
+    override public func mouseDragged(with event: NSEvent) {
+        let mousePoint = self.convert(event.locationInWindow,
+                                      from: nil)
+        handleMouseClick(at: mousePoint)
     }
 
     // This will be called every 1/60s.
@@ -101,10 +110,12 @@ public class SPOpenGLView: NSOpenGLView {
 
         shader.use()
         glBindVertexArray(quadVAO)
+ 
         glUniform2f(resolutionLoc,
                     GLfloat(frame.width), GLfloat(frame.height))
         glUniform1f(timeLoc, GLfloat(elapsedTime))
         glUniform2fv(mouseLoc, 1, mouseCoords)
+
         glDrawArrays(GLenum(GL_TRIANGLE_STRIP), 0, 4)
         glBindVertexArray(0)
         glUseProgram(0)
@@ -123,7 +134,7 @@ public final class SPViewController: NSViewController {
     override public func loadView() {
         //Swift.print("loadView")
         let frameRect = NSRect(x: 0, y: 0,
-                               width: 400, height: 400)
+                               width: 480, height: 270)
         self.view = NSView(frame: frameRect)
 
         let pixelFormatAttrsBestCase: [NSOpenGLPixelFormatAttribute] = [

@@ -10,6 +10,7 @@ public class SPOpenGLView: NSOpenGLView {
     let shader = GLShader()
     var quadVAO: GLuint = 0
     var resolutionLoc: GLint = 0
+    var u_tex0Resolution: [GLfloat] = [0.0, 0.0]
     var mouseLoc: GLint = 0
     var mouseCoords: [GLfloat] = [0.0, 0.0]
     var timeLoc: GLint = 0
@@ -57,7 +58,7 @@ public class SPOpenGLView: NSOpenGLView {
         Swift.print("Time:", timeLoc)
 
         texture0Loc = glGetUniformLocation(shader.program, "u_tex0")
-        textureID = loadTexture("HokusaiWave.png")
+        textureID = loadTexture("HokusaiWave.jpg", resolution: &u_tex0Resolution)
         // The geometry of the quad is embedded in the vertex shader
         // but OpenGL needs to bind a vertex array object (VAO).
         glGenVertexArrays(1, &quadVAO)
@@ -71,7 +72,8 @@ public class SPOpenGLView: NSOpenGLView {
 
     // Note: GLKTextureLoader only supports OpenGL 3.2
     // To support loading of graphic files.
-    func loadTexture(_ name: String) -> GLuint {
+    func loadTexture(_ name: String,
+                     resolution: inout [GLfloat]) -> GLuint {
         let mainBundle = Bundle.main
 
         let url = mainBundle.urlForImageResource(name)
@@ -84,6 +86,8 @@ public class SPOpenGLView: NSOpenGLView {
         catch let error {
             fatalError("Error loading picture file:\(error)")
         }
+        resolution[0] = GLfloat(textureInfo.width)
+        resolution[1] = GLfloat(textureInfo.height)
 
         return textureInfo.name
     }
@@ -97,11 +101,21 @@ public class SPOpenGLView: NSOpenGLView {
         self.render(elapsedTime: stopClock.timeElapsed())
      }
 
+    func handleMouseClick(at point: NSPoint) {
+        mouseCoords[0] = GLfloat(point.x)
+        mouseCoords[1] = GLfloat(point.y)
+    }
+    
     override public func mouseDown(with event: NSEvent) {
         let mousePoint = self.convert(event.locationInWindow,
                                       from: nil)
-        mouseCoords[0] = GLfloat(mousePoint.x)
-        mouseCoords[1] = GLfloat(mousePoint.y)
+        handleMouseClick(at: mousePoint)
+    }
+
+    override public func mouseDragged(with event: NSEvent) {
+        let mousePoint = self.convert(event.locationInWindow,
+                                      from: nil)
+        handleMouseClick(at: mousePoint)
     }
 
     // This will be called every 1/60s.
@@ -126,6 +140,7 @@ public class SPOpenGLView: NSOpenGLView {
 
         shader.use()
         glBindVertexArray(quadVAO)
+ 
         // Pass the uniforms to the fragment shader
         glUniform2f(resolutionLoc,
                     GLfloat(frame.width), GLfloat(frame.height))
@@ -156,7 +171,7 @@ public final class SPViewController: NSViewController {
     override public func loadView() {
         // Change the values of the frame rectangle to an appropriate value.
         let frameRect = NSRect(x: 0, y: 0,
-                               width: 400, height: 400)
+                               width: 480, height: 270)
         self.view = NSView(frame: frameRect)
 
         let pixelFormatAttrsBestCase: [NSOpenGLPixelFormatAttribute] = [
